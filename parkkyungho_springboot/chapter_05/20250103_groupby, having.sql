@@ -67,11 +67,26 @@ select staff_id, user_id, count(*)
 	order by staff_id, count(*) desc; 
 -- 3. orders에서 월별로 주문한 회원 수 출력할 것(order_date 컬럼 이용, 최신순으로 정렬)
 select * from orders;
+
+
+-- 1번 쿼리
 select substr(order_date, 1, 7), count(distinct user_id) 
 	from orders
 	group by substr(order_date, 1, 7)
 	order by substr(order_date, 1, 7) desc;
+-- 2번 쿼리
+select substr(order_date, 1, 7) AS month, count(distinct user_id) 
+	from orders
+	group by month
+	order by month desc;
 	
+-- 표준 sql에서는 1번 쿼리만 가능하고 마리아db에서는 alias를 groupby, orderby에
+-- 사용 가능(2번 쿼리가 마리아db에서는 가능)
+
+-- sqld / p에서는 2번 쿼리와 같은 방식으로 출제 되지 않습니다.
+-- db간 호환성을 염두에 두고 있을 때는 1번 쿼리 방식으로 작성하는 것이 안전합니다.
+
+
 -- having
 -- group by를 이용해서 데이터를 그룹화하고, 해당 그룹별로 집계 연산을 수행하여,
 -- 국가별 회원 수를 도출해낼 수 있었습니다(count())
